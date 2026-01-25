@@ -1,0 +1,8 @@
+{
+  "name": "Gestion des Dossiers",
+  "short_name": "Dossiers",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#4f46e5"
+}

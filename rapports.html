@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Rapports</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <h1>Rapports par période</h1>
+
+    <nav>
+      <a href="index.html">Enregistrement</a>
+      <a href="rapports.html">Rapports</a>
+      <a href="stats.html">Statistiques</a>
+    </nav>
+
+    <div class="card">
+      <label>Date début</label>
+      <input type="date" id="dateDebut" />
+
+      <label>Date fin</label>
+      <input type="date" id="dateFin" />
+
+      <button onclick="afficherRapports()">Afficher rapports</button>
+    </div>
+
+    <div id="rapports"></div>
+
+    <script type="module" src="js/rapports.js"></script>
+  </body>
+</html>
