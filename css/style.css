@@ -1,50 +1,108 @@
+/* Reset basique */
+* {
+  box-sizing: border-box;
+}
+
+/* Corps de la page */
 body {
   font-family: Arial, sans-serif;
   background: #f5f7fa;
-  padding: 20px;
+  padding: 16px;
+  margin: 0;
+  min-height: 100vh;
 }
 
+/* Titre principal */
 h1 {
   text-align: center;
-}
-
-nav {
-  text-align: center;
+  font-size: clamp(1.5rem, 4vw, 2.2rem);
   margin-bottom: 20px;
 }
 
+/* Navigation */
+nav {
+  text-align: center;
+  margin-bottom: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+
 nav a {
-  margin: 0 10px;
   text-decoration: none;
   font-weight: bold;
   color: #4f46e5;
+  padding: 8px 12px;
+  border-radius: 6px;
 }
 
+nav a:hover {
+  background: #e0e7ff;
+}
+
+/* Carte principale */
 .card {
-  max-width: 400px;
+  width: 100%;
+  max-width: 420px;
   margin: auto;
   background: white;
   padding: 20px;
-  border-radius: 8px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
 }
 
+/* Labels */
 label {
   display: block;
-  margin-top: 10px;
+  margin-top: 12px;
+  font-weight: 600;
 }
 
+/* Champs de formulaire */
 select,
 input,
 button {
   width: 100%;
-  padding: 8px;
-  margin-top: 5px;
+  padding: 10px;
+  margin-top: 6px;
+  font-size: 1rem;
 }
 
+/* Bouton */
 button {
-  margin-top: 15px;
+  margin-top: 16px;
   background: #4f46e5;
   color: white;
   border: none;
+  border-radius: 8px;
   cursor: pointer;
+  font-weight: bold;
+  transition: background 0.2s ease;
+}
+
+button:hover {
+  background: #4338ca;
+}
+
+/* 📱 Petits écrans (smartphones) */
+@media (max-width: 480px) {
+  body {
+    padding: 12px;
+  }
+
+  .card {
+    padding: 16px;
+  }
+
+  nav a {
+    font-size: 0.95rem;
+  }
+}
+
+/* 💻 Grands écrans */
+@media (min-width: 1024px) {
+  .card {
+    max-width: 480px;
+  }
 }
