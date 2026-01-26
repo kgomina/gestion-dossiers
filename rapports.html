@@ -2,9 +2,13 @@
 <html lang="fr">
   <head>
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Rapports</title>
+
+    <!-- CSS principal -->
     <link rel="stylesheet" href="css/style.css" />
   </head>
+
   <body>
     <h1>Rapports par période</h1>
 
@@ -14,17 +18,20 @@
       <a href="stats.html">Statistiques</a>
     </nav>
 
-    <div class="card">
-      <label>Date début</label>
-      <input type="date" id="dateDebut" />
+    <main>
+      <div class="card">
+        <label>Date début</label>
+        <input type="date" id="dateDebut" />
 
-      <label>Date fin</label>
-      <input type="date" id="dateFin" />
+        <label>Date fin</label>
+        <input type="date" id="dateFin" />
 
-      <button onclick="afficherRapports()">Afficher rapports</button>
-    </div>
+        <button onclick="afficherRapports()">Afficher rapports</button>
+      </div>
+    </main>
 
-    <div id="rapports"></div>
+    <!-- Résultat des rapports -->
+    <div id="rapports" style="padding: 20px"></div>
 
     <script type="module" src="js/rapports.js"></script>
   </body>

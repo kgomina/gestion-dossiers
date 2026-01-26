@@ -4,7 +4,9 @@ import {
   getDocs,
 } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
 
-// Types de dossiers
+// Chart.js plugin pour afficher les valeurs
+import ChartDataLabels from "https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js";
+
 const TYPES = [
   "Facturation Fonciers",
   "Traitement Fonciers",
@@ -16,7 +18,7 @@ const TYPES = [
   "Traitement Autres Actes",
 ];
 
-let donneesFiltrees = []; // pour l'export Excel
+let donneesFiltrees = [];
 
 window.afficherStats = async () => {
   const dateDebut = document.getElementById("dateDebutStat").value;
@@ -41,12 +43,12 @@ window.afficherStats = async () => {
     TYPES.forEach((t) => (totals[t] = 0));
     donneesFiltrees.forEach((d) => (totals[d.type] += d.nombre));
 
-    // Données pour graphiques
     const valeurs = TYPES.map((t) => totals[t]);
 
-    // Histogramme
+    // Histogramme avec valeurs au-dessus
     const ctx = document.getElementById("histogramme").getContext("2d");
-    new Chart(ctx, {
+    if (window.histChart) window.histChart.destroy(); // pour redessiner proprement
+    window.histChart = new Chart(ctx, {
       type: "bar",
       data: {
         labels: TYPES,
@@ -62,13 +64,25 @@ window.afficherStats = async () => {
         responsive: true,
         plugins: {
           legend: { display: false },
+          datalabels: {
+            anchor: "end",
+            align: "end",
+            color: "#000",
+            font: { weight: "bold", size: 14 },
+            formatter: (value) => value,
+          },
+        },
+        scales: {
+          y: { beginAtZero: true },
         },
       },
+      plugins: [ChartDataLabels],
     });
 
-    // Camembert
+    // Camembert avec valeurs
     const ctx2 = document.getElementById("camembert").getContext("2d");
-    new Chart(ctx2, {
+    if (window.pieChart) window.pieChart.destroy();
+    window.pieChart = new Chart(ctx2, {
       type: "pie",
       data: {
         labels: TYPES,
@@ -88,7 +102,18 @@ window.afficherStats = async () => {
           },
         ],
       },
-      options: { responsive: true },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { position: "bottom" },
+          datalabels: {
+            color: "#fff",
+            font: { weight: "bold", size: 14 },
+            formatter: (value) => value,
+          },
+        },
+      },
+      plugins: [ChartDataLabels],
     });
   } catch (error) {
     console.error(error);
@@ -103,7 +128,6 @@ window.exportExcel = () => {
     return;
   }
 
-  // Transformer les données pour Excel
   const excelData = donneesFiltrees.map((d) => ({
     Type: d.type,
     Date: d.date,
