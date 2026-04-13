@@ -5,56 +5,65 @@ import {
   serverTimestamp,
 } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
 
-// Les 8 types de dossiers
-const TYPES = [
-  "Facturation Fonciers",
-  "Traitement Fonciers",
-  "Facturation Marchés",
-  "Traitement Marchés",
-  "Facturation Successions",
-  "Traitement Successions",
-  "Facturation Autres Actes",
-  "Traitement Autres Actes",
-];
-
-// Remplir le select avec les types
-const typeSelect = document.getElementById("type");
-TYPES.forEach((t) => {
-  const option = document.createElement("option");
-  option.value = t;
-  option.textContent = t;
-  typeSelect.appendChild(option);
-});
-
-window.enregistrer = async () => {
-  const type = typeSelect.value;
+// Enregistrement groupé de tous les types en une seule soumission
+window.enregistrerTout = async () => {
   const date = document.getElementById("date").value;
-  const nombre = parseInt(document.getElementById("nombre").value);
 
   if (!date) {
     alert("Veuillez choisir une date !");
     return;
   }
-  if (!nombre || nombre < 1) {
-    alert("Veuillez renseigner un nombre valide !");
+
+  // Récupérer tous les inputs de type
+  const inputs = document.querySelectorAll(".type-input");
+
+  // Construire la liste des entrées avec nombre > 0
+  const entries = [];
+  inputs.forEach((input) => {
+    const nombre = parseInt(input.value) || 0;
+    if (nombre > 0) {
+      entries.push({
+        type: input.dataset.type,
+        nombre: nombre,
+      });
+    }
+  });
+
+  if (entries.length === 0) {
+    alert("Veuillez renseigner au moins un nombre de dossiers supérieur à 0 !");
     return;
   }
 
   try {
-    // On crée un enregistrement par type et date avec le nombre
-    await addDoc(collection(db, "dossiers"), {
-      type: type,
-      date: date,
-      nombre: nombre,
-      createdAt: serverTimestamp(),
+    // Enregistrer chaque type dans Firestore
+    const promises = entries.map((entry) =>
+      addDoc(collection(db, "dossiers"), {
+        type: entry.type,
+        date: date,
+        nombre: entry.nombre,
+        createdAt: serverTimestamp(),
+      })
+    );
+
+    await Promise.all(promises);
+
+    // Afficher un récapitulatif
+    const recap = document.getElementById("recap");
+    let html = `<strong>✅ Enregistrement réussi pour le ${date} :</strong><ul style="margin-top:8px;padding-left:18px;">`;
+    entries.forEach((e) => {
+      html += `<li>${e.type} : <strong>${e.nombre}</strong> dossier(s)</li>`;
     });
+    html += `</ul>`;
+    recap.innerHTML = html;
+    recap.classList.add("visible");
 
-    alert(`Dossier(s) enregistré(s) ✔ (${nombre} dossier(s))`);
-
-    // Réinitialiser le formulaire
+    // Réinitialiser les inputs
+    inputs.forEach((input) => (input.value = "0"));
     document.getElementById("date").value = "";
-    document.getElementById("nombre").value = "1";
-    typeSelect.selectedIndex = 0;
+
+    // Masquer le recap après 6 secondes
+    setTimeout(() => recap.classList.remove("visible"), 6000);
+
   } catch (error) {
     console.error("Erreur lors de l'enregistrement :", error);
     alert("Erreur lors de l'enregistrement ❌");

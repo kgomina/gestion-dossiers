@@ -4,43 +4,35 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Statistiques</title>
-
-    <!-- CSS principal -->
     <link rel="stylesheet" href="css/style.css" />
-
-    <!-- Librairies -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0"></script>
+    <!-- Librairies dans le bon ordre -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
   </head>
-
   <body>
     <h1>Statistiques des dossiers</h1>
-
     <nav>
       <a href="index.html">Enregistrement</a>
       <a href="rapports.html">Rapports</a>
       <a href="stats.html">Statistiques</a>
     </nav>
-
     <main>
       <div class="card">
         <label>Date début</label>
         <input type="date" id="dateDebutStat" />
-
         <label>Date fin</label>
         <input type="date" id="dateFinStat" />
-
         <button onclick="afficherStats()">Afficher statistiques</button>
-        <button onclick="exportExcel()">Exporter Excel</button>
+        <button onclick="exportExcel()" style="margin-top:10px; background:#10b981;">
+          📥 Exporter Excel
+        </button>
       </div>
     </main>
-
     <div id="charts-container">
       <canvas id="histogramme"></canvas>
       <canvas id="camembert"></canvas>
     </div>
-
     <script type="module" src="js/stats.js"></script>
   </body>
 </html>
