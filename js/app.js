@@ -34,6 +34,19 @@ window.enregistrerTout = async () => {
     return;
   }
 
+  // Vérification du code secret avant soumission
+  const code = prompt("🔐 Code d'autorisation requis :");
+
+  if (code === null) {
+    // L'utilisateur a annulé
+    return;
+  }
+
+  if (code !== "270") {
+    alert("Code incorrect ❌ Enregistrement annulé.");
+    return;
+  }
+
   try {
     // Enregistrer chaque type dans Firestore
     const promises = entries.map((entry) =>
