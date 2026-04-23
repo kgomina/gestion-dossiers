@@ -55,7 +55,7 @@ window.enregistrerTout = async () => {
         date: date,
         nombre: entry.nombre,
         createdAt: serverTimestamp(),
-      })
+      }),
     );
 
     await Promise.all(promises);
@@ -74,9 +74,8 @@ window.enregistrerTout = async () => {
     inputs.forEach((input) => (input.value = "0"));
     document.getElementById("date").value = "";
 
-    // Masquer le recap après 6 secondes
-    setTimeout(() => recap.classList.remove("visible"), 6000);
-
+    // Masquer le recap après 15 secondes
+    setTimeout(() => recap.classList.remove("visible"), 15000);
   } catch (error) {
     console.error("Erreur lors de l'enregistrement :", error);
     alert("Erreur lors de l'enregistrement ❌");
