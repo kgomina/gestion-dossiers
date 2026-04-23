@@ -1,4 +1,4 @@
-const CACHE_NAME = "gestion-dossiers-v2";
+const CACHE_NAME = "gestion-dossiers-v3";
 
 // Fichiers à mettre en cache pour le mode hors-ligne
 const ASSETS = [
@@ -22,7 +22,7 @@ self.addEventListener("install", (event) => {
     caches.open(CACHE_NAME).then((cache) => {
       console.log("[SW] Mise en cache des fichiers...");
       return cache.addAll(ASSETS);
-    })
+    }),
   );
   self.skipWaiting();
 });
@@ -37,9 +37,9 @@ self.addEventListener("activate", (event) => {
           .map((key) => {
             console.log("[SW] Suppression ancien cache :", key);
             return caches.delete(key);
-          })
-      )
-    )
+          }),
+      ),
+    ),
   );
   self.clients.claim();
 });
@@ -66,10 +66,12 @@ self.addEventListener("fetch", (event) => {
         // Mettre en cache la nouvelle réponse
         if (response && response.status === 200) {
           const clone = response.clone();
-          caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
+          caches
+            .open(CACHE_NAME)
+            .then((cache) => cache.put(event.request, clone));
         }
         return response;
       });
-    })
+    }),
   );
 });
